@@ -28,15 +28,31 @@ const VIEW_PATH_LENGTH = len("/view/")
 const EDIT_PATH_LENGTH = len("/edit/")
 const SAVE_PATH_LENGTH = len("/save/")
 
-var templates = make(map[string]*template.Template)
-
 var titleValidator = regexp.MustCompile("^[a-zA-Z0-9]+$")
+
+var templates = make(map[string]*template.Template)
 
 func init() {
 	for _, fileName := range []string{"top", "view", "edit"} {
 		template := template.Must(template.ParseFiles(HTML_PATH + fileName + ".html"))
 		templates[fileName] = template
 	}
+}
+
+// Model func
+func (page *Page)save() error {
+	fileName := page.Title + ".txt"
+	// 0600はread + writeのアクセス権限設定(自分のみ)
+	return ioutil.WriteFile(TEXT_PATH + fileName, page.Body, 0600)
+}
+
+func loadPage(title string) (*Page, error) {
+	fileName := title + ".txt"
+	body, error := ioutil.ReadFile(TEXT_PATH + fileName)
+	if error != nil {
+		return nil, error
+	}
+	return &Page{Title: title, Body: body}, nil
 }
 
 // Helper or Common func or Base Class func
@@ -117,22 +133,6 @@ func saveHandler(writer http.ResponseWriter, request *http.Request, title string
 		return
 	}
 	http.Redirect(writer, request, "/view/" + title, http.StatusFound)
-}
-
-// Model func
-func (page *Page)save() error {
-	fileName := page.Title + ".txt"
-	// 0600はread + writeのアクセス権限設定(自分のみ)
-	return ioutil.WriteFile(TEXT_PATH + fileName, page.Body, 0600)
-}
-
-func loadPage(title string) (*Page, error) {
-	fileName := title + ".txt"
-	body, error := ioutil.ReadFile(TEXT_PATH + fileName)
-	if error != nil {
-		return nil, error
-	}
-	return &Page{Title: title, Body: body}, nil
 }
 
 // rooting and listen serve.
