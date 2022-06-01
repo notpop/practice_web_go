@@ -1,0 +1,7 @@
+<h1 style="background: #c2edff;padding: 0.5rem;">Go Web</h1>
+<h2 style="background: linear-gradient(transparent 70%, #a7d6ff 70%)">{{ .Title |html| }}</h2>
+<p>[<a href="/edit/{{ .Title |html| }}">edit</a>]</p>
+<div>{{ printf "%s" .Body|html| }}</div>
+<br/>
+<br/>
+<a href="/top">topへ</a>

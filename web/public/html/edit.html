@@ -1,0 +1,11 @@
+<h1 style="background: #c2edff;padding: 0.5rem;">Go Web</h1>
+<h2 style="background: linear-gradient(transparent 70%, #a7d6ff 70%)">Editing {{ .Title |html| }}</h2>
+<form action="/save/{{ .Title |html| }}" method="POST">
+  <div>
+    <textarea name="body" rows="20" cols="80">{{ printf "%s" .Body|html| }}</textarea>
+  </div>
+  <br/>
+  <div>
+    <input type="submit" value="Save">
+  </div>
+</form>

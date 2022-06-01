@@ -1,0 +1,6 @@
+<h1 style="background: #c2edff;padding: 0.5rem;">Go Web</h1>
+<!-- <h2 style="background: linear-gradient(transparent 70%, #a7d6ff 70%)">新規作成方法</h2> -->
+<h2 style="background: linear-gradient(transparent 70%, #a7d6ff 70%)">ページ</h2>
+{{ range . }}
+<p><a href="/view/{{ . |html| }}">{{ . }}</a>[<a href="/edit/{{. |html| }}">edit</a>]</p>
+{{ end }}
