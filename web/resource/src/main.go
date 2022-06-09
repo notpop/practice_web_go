@@ -12,7 +12,7 @@ import (
 
 type Page struct {
 	Title string
-	Body []byte
+	Body  []byte
 }
 
 const PUBLIC_PATH = "../../public/"
@@ -40,10 +40,10 @@ func init() {
 }
 
 // Model func
-func (page *Page)save() error {
+func (page *Page) save() error {
 	fileName := page.Title + ".txt"
 	// 0600はread + writeのアクセス権限設定(自分のみ)
-	return ioutil.WriteFile(TEXT_PATH + fileName, page.Body, 0600)
+	return ioutil.WriteFile(TEXT_PATH+fileName, page.Body, 0600)
 }
 
 func loadPage(title string) (*Page, error) {
@@ -110,7 +110,7 @@ func topHandler(writer http.ResponseWriter, request *http.Request) {
 func viewHandler(writer http.ResponseWriter, request *http.Request, title string) {
 	page, error := loadPage(title)
 	if error != nil {
-		http.Redirect(writer, request, "/edit/" + title, http.StatusFound)
+		http.Redirect(writer, request, "/edit/"+title, http.StatusFound)
 		return
 	}
 	renderTemplate(writer, "view", page)
@@ -132,7 +132,7 @@ func saveHandler(writer http.ResponseWriter, request *http.Request, title string
 		http.Error(writer, error.Error(), http.StatusInternalServerError)
 		return
 	}
-	http.Redirect(writer, request, "/view/" + title, http.StatusFound)
+	http.Redirect(writer, request, "/view/"+title, http.StatusFound)
 }
 
 // rooting and listen serve.
